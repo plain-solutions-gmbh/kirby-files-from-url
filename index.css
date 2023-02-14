@@ -1,0 +1,14 @@
+
+
+
+
+.k-filesfromurl-dialog .k-box[data-theme=info] {    
+    display: flex;
+    margin-top: 0.75rem;
+    align-items: center;
+}
+.k-filesfromurl-dialog .k-loader {    
+    display: inline-block;
+    padding-right: 0.5rem;
+}
+
