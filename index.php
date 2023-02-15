@@ -42,7 +42,7 @@ Kirby::plugin('microman/filesfromurl', [
 
 				$temp_file = sys_get_temp_dir() . "/" . $filename;
 
-				F::write($temp_file, file_get_contents($url));
+				F::write($temp_file, $content);
 				
 				// Get/Set the extension
 				$mime      = F::mime($temp_file);
