@@ -2,16 +2,12 @@
     "name": "microman/kirby-files-from-url",
     "description": "Upload file from url in files field",
     "type": "kirby-plugin",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "authors": [{
         "name": "Roman Gsponer",
         "email": "kirby@microman.ch"
     }],
     "require": {
         "getkirby/composer-installer": "^1.1"
-    },
-    "funding": [{
-        "type": "other",
-        "url": "https://www.paypal.com/donate/?hosted_button_id=9F58LDZYW763W"
-    }]
+    }
 }

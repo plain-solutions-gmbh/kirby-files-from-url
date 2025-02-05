@@ -1,63 +1,66 @@
 <template>
+  <!-- eslint-disable-next-line attribute-hyphenation -->
   <k-dialog
-    ref="filesFromUrl"
-    :submitbutton="$t('upload')"
+    v-bind="$props"
+    :submit-button="$t('upload')"
     :disabled="loading"
     theme="positive"
     size="medium"
     icon="upload"
     class="k-filesfromurl-dialog"
     @submit="submit"
+    @cancel="close()"
   >
-    <k-url-field ref="url" v-model="url" name="url" :label="$t('url')" />
-    <k-info-field v-if="error" theme="negative" :text="error" />
-    <k-box v-if="loading" theme="info"> <k-loader /> {{ $t("upload") }} </k-box>
+    <k-url-field v-model="url" theme="field" name="url" :label="$t('url')" />
+    <k-box v-if="error" theme="negative" icon="alert" :text="error" />
+    <k-box v-if="loading" theme="info" icon="loader" :text="$t('upload')" />
   </k-dialog>
 </template>
 
 <script>
 export default {
+  extends: "k-dialog",
+  props: {
+    uploadinfo: {
+      type: [Object],
+      required: true,
+    },
+  },
   data() {
     return {
+      url: "",
       error: false,
       loading: false,
     };
   },
-  created() {},
   methods: {
-    open() {
-      this.error = false;
-      this.loading = false;
-      this.url = "";
-      this.$refs.filesFromUrl.open();
-    },
-    close() {
-      this.error = false;
-      this.loading = false;
-      this.$refs.filesFromUrl.close();
-    },
-    onError(msg) {
-      this.loading = false;
-      this.error = msg;
-    },
     submit() {
+      const url = "uploadfromurl";
+
       this.loading = true;
-      this.error = "";
-      this.$emit("submit", this.url);
+      this.error = false;
+
+      this.$api
+        .get(url, {
+          url: this.url,
+          ...this.uploadinfo,
+        })
+        .then((file) => {
+          this.loading = false;
+          this.$emit("uploaded", file);
+          this.close();
+        })
+        .catch((error) => {
+          this.loading = false;
+          this.error = error.message;
+        });
     },
   },
 };
 </script>
 
 <style>
-.k-filesfromurl-dialog .k-box[data-theme="info"] {
-  display: flex;
-  margin-top: 0.75rem;
-  align-items: center;
-}
-
-.k-filesfromurl-dialog .k-loader {
-  display: inline-block;
-  padding-right: 0.5rem;
+.k-filesfromurl-dialog .k-url-field {
+  margin-bottom: 0.75rem;
 }
 </style>
