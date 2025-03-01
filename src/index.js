@@ -1,7 +1,7 @@
 import FilesFromUrl from "./components/FilesFromUrl.vue";
 import FilesFromUrlDialog from "./components/FilesFromUrlDialog.vue";
 
-window.panel.plugin("microman/filesfromurl", {
+window.panel.plugin("plain/filesfromurl", {
   fields: {
     files: FilesFromUrl,
   },
