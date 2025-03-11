@@ -1,6 +1,6 @@
 <?php
 
-@include_once __DIR__ . '/utils/load.php';
+@include_once __DIR__ . '/utils/Plugin.php';
 
 use Plain\Helpers\Plugin;
 

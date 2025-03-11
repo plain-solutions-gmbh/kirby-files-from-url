@@ -16,6 +16,11 @@ use Kirby\Data\Data;
 class Plugin
 {
 
+    const CLASSES = [
+        'Plain\\Helpers\\License' => __DIR__ . '/License.php',
+        'Plain\\Helpers\\Autoloader' => __DIR__ . '/Autoloader.php',
+    ];
+
     public static function load(
         string $name,
         ?array $extends = null,
@@ -24,6 +29,7 @@ class Plugin
         Autoloader|array|bool $autoloader = false
     ): void {
 
+        spl_autoload_register([self::class, 'autoload']);
 
         $root ??= dirname(debug_backtrace()[0]['file']);
         $info ??= Data::read($root . '/composer.json');
@@ -74,6 +80,14 @@ class Plugin
             ];
         }
         return null;
+    }
+
+    private static function autoload(string $className): void
+    {
+        if (array_key_exists($className, static::CLASSES)) {
+            require_once static::CLASSES[$className];
+            return;
+        }
     }
 
 }
