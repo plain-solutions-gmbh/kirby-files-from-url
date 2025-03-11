@@ -16,7 +16,7 @@ Upload a files (images, video, documents) from url. Direct from the files field.
 
 **With Composer**
 
-`composer require getplain/kirby-files-from-url`
+`composer require plain/kirby-files-from-url`
 
 # License
 
