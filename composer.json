@@ -2,7 +2,7 @@
     "name": "plain/kirby-files-from-url",
     "description": "Upload file from url in files field",
     "type": "kirby-plugin",
-    "version": "2.1.2",
+    "version": "2.1.3",
     "license": "MIT",
 	"homepage": "https://plain-solutions.net/904955",
 	"authors": [
