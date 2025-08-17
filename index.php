@@ -4,4 +4,4 @@
 
 use Plain\Helpers\Plugin;
 
-Plugin::load('plain/filesfromurl', autoloader: ['config']);
+Plugin::load('plain/filesfromurl', autoloader: true);
