@@ -12,26 +12,26 @@ export default {
         click: () =>
           this.$panel.dialog.open({
             component: "k-filesfromurl-dialog",
-            props: { uploadinfo: this.uploadinfo },
+            props: {
+              endpoint: this.endpoints.field
+            },
             on: { uploaded: (file) => this.uploaded(file) },
           }),
       });
 
       return button;
     },
-    uploadinfo() {
-      return {
-        endpoint: this.endpoints.field,
-        parent: this.parent,
-        fieldinfo: JSON.stringify({
-          image: this.image,
-          info: this.info ?? false,
-          model: this.model,
-          text: this.text,
-        }),
-        ...this.uploads,
-      };
-    },
+    // uploadinfo() {
+    //   return {
+    //     fieldinfo: JSON.stringify({
+    //       image: this.image,
+    //       info: this.info ?? false,
+    //       model: this.model,
+    //       text: this.text,
+    //     }),
+    //     ...this.uploads,
+    //   };
+    // },
   },
   methods: {
     uploaded(file) {

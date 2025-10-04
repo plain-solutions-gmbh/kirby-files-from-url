@@ -25,8 +25,10 @@ return [
                 }
 
                 // Get Parent
-                $query = Query::factory($params['parent']);
-                $parent = $query->resolve();
+                $parent_name = str_replace('/', '+', $params['parent']);
+                //$parent = $this->kirby()->site()->findPageOrDraft($params['parent']);
+                $query = Query::factory($parent_name);
+                //$parent = $query->resolve();
 
                 //Get data
                 try {
@@ -35,6 +37,9 @@ return [
                     $msg = $th->getMessage();
                     throw new Exception(Str::after($msg, ': '));
                 };
+
+                throw new Exception("Breakponit", 1);
+                
 
                 // Try to get a filename from url
                 preg_match("/(\w+)\.\w+(?!.*(\w+)(\.\w+)+)/", $url, $filename);

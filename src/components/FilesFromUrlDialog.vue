@@ -21,10 +21,7 @@
 export default {
   extends: "k-dialog",
   props: {
-    uploadinfo: {
-      type: [Object],
-      required: true,
-    },
+    endpoint: String
   },
   data() {
     return {
@@ -35,16 +32,16 @@ export default {
   },
   methods: {
     submit() {
-      const url = "uploadfromurl";
+      //const url = "uploadfromurl";
+
+      const url = this.endpoint + "/uploadfromurl"
+
 
       this.loading = true;
       this.error = false;
 
       this.$api
-        .get(url, {
-          url: this.url,
-          ...this.uploadinfo,
-        })
+        .get(url, { url: this.url })
         .then((file) => {
           this.loading = false;
           this.$emit("uploaded", file);
