@@ -1,7 +1,8 @@
 <?php
 
-@include_once __DIR__ . '/utils/load.php';
+use Kirby\Cms\App;
 
-use Plain\Helpers\Plugin;
-
-Plugin::load('plain/filesfromurl', autoloader: true);
+App::plugin('plain/filesfromurl', [
+    'api' => require __DIR__ . '/config/api.php',
+    'fields' => require __DIR__ . '/config/fields.php',
+]);

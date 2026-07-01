@@ -5,7 +5,6 @@ use Kirby\Filesystem\F;
 use Kirby\Cms\File;
 use Kirby\Toolkit\Str;
 use Kirby\Toolkit\I18n;
-use Kirby\Filesystem\Mime;
 use Kirby\Toolkit\V;
 use Kirby\Exception\Exception;
 use Kirby\Query\Query;
