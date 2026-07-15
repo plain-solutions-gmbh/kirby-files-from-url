@@ -7,7 +7,7 @@ use Kirby\Toolkit\Str;
 use Kirby\Toolkit\I18n;
 use Kirby\Toolkit\V;
 use Kirby\Exception\Exception;
-use Kirby\Query\Query;
+use Kirby\Uuid\Uuid;
 
 
 $app = App::instance();
@@ -19,9 +19,45 @@ $files = F::load(
 
 $apis = $files['api']();
 
+$writeUuidMetadata = function (File $file) use ($app): File {
+    $uuid = $file->content('default')->get('uuid')->value() ?: Uuid::generate();
+    $extension = $app->contentExtension();
+
+    $write = function (string $path) use ($uuid) {
+        if (F::exists($path) === false) {
+            F::write($path, 'Uuid: ' . $uuid);
+        }
+    };
+
+    if ($app->multilang() === true) {
+        foreach ($app->languages() as $language) {
+            $write($file->root() . '.' . $language->code() . '.' . $extension);
+        }
+    } else {
+        $write($file->root() . '.' . $extension);
+    }
+
+    return $file->parent()->file($file->filename()) ?? $file;
+};
+
+foreach ($apis as &$api) {
+    if (($api['pattern'] ?? null) !== 'upload') {
+        continue;
+    }
+
+    $api['action'] = function () use ($writeUuidMetadata) {
+        $field = $this->field();
+
+        return $field->upload($this, $field->uploads(), function ($file) use ($field, $writeUuidMetadata) {
+            return $field->fileResponse($writeUuidMetadata($file));
+        });
+    };
+}
+unset($api);
+
 array_push($apis, [
     'pattern' => 'uploadfromurl',
-    'action'  => function () {
+    'action'  => function () use ($writeUuidMetadata) {
 
         $url = $this->requestQuery('url');
         $field = $this->field();
@@ -57,10 +93,15 @@ array_push($apis, [
         $mime      = F::mime($temp_file);
         $filename .= "." . F::mimeToExtension($mime);
 
+        $uuid = Uuid::generate();
+
         $file = $parent->createFile([
             'source' => $temp_file,
             'template' => $params['template'] ?? null,
-            'filename' => $filename
+            'filename' => $filename,
+            'content' => [
+                'uuid' => $uuid
+            ]
         ], true);
 
         if ($file instanceof File === false) {
@@ -69,7 +110,7 @@ array_push($apis, [
             );
         }
 
-        return $field->fileResponse($file);
+        return $field->fileResponse($writeUuidMetadata($file));
     }
 ]);
 

@@ -34,14 +34,18 @@ export default {
     // },
   },
   methods: {
-    uploaded(file) {
+    async uploaded(file) {
       if (this.multiple === false) {
         this.selected = [];
       }
 
-      this.selected.push(file);
+      if (this.selected.find((selected) => selected.id === file.id) === undefined) {
+        this.selected.push(file);
+      }
 
       this.onInput();
+      await this.$panel.content.update();
+
       this.$events.emit("file.upload");
       this.$events.emit("model.update");
     },
